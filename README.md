@@ -38,6 +38,7 @@ Designed a microservices-based pipeline using OCR and LLMs to automate document 
 ### 🧠 Key Value
 This system combines AI + automation + backend architecture to solve real enterprise problems.
 
+```mermaid
 flowchart LR
     A[Upload Document] --> B[Preprocessing - OpenCV]
     B --> C[OCR - PaddleOCR]
@@ -49,6 +50,8 @@ flowchart LR
     G --> I[API Response]
 
     style E fill:#f9f,stroke:#333,stroke-width:2px
+```
+
 
 ## 🏗️ Warehouse Management System (WMS)
 
@@ -72,6 +75,25 @@ Developed a robust backend using .NET Core with enterprise-level practices.
 ### 🧠 Key Value
 Enterprise-grade backend architecture with strong focus on scalability and maintainability.
 
+```mermaid
+flowchart TD
+    A[Client / Frontend] --> B[API .NET Core]
+    B --> C[Authentication JWT]
+    B --> D[Business Logic Layer]
+    D --> E[Entity Framework]
+    E --> F[(SQL Server DB)]
+
+    subgraph DevOps
+        G[GitLab CI/CD]
+        H[Automated Deployment]
+    end
+
+    B --> G
+    G --> H
+
+    style B fill:#bbf,stroke:#333
+```
+
 ## 📡 Industrial Weighing & Invoicing Automation API
 
 ### 📌 Problem
@@ -93,6 +115,24 @@ Developed a backend system that integrates directly with industrial hardware.
 
 ### 🧠 Key Value
 Rare combination of backend + hardware integration + automation.
+
+```mermaid
+flowchart LR
+    A[Industrial Scale] -->|Serial/USB| B[Backend API - FastAPI]
+    B --> C[Data Processing]
+    C --> D[(PostgreSQL DB)]
+    C --> E[PDF Generator]
+    E --> F[Invoice Output]
+
+    subgraph Deployment
+        G[Docker Container]
+    end
+
+    B --> G
+
+    style A fill:#fdd
+    style B fill:#bbf
+```
 
 ## 🤖 AI Workflow Automation Agent
 
@@ -135,6 +175,22 @@ Developed a centralized API for printer management.
 
 ### 🧠 Key Value
 IoT + backend + mobile integration.
+
+```mermaid
+flowchart LR
+    A[Mobile App - Ionic] --> B[Backend API - FastAPI]
+    B --> C[Printer Detection Service]
+
+    C --> D[Zebra Printer]
+    C --> E[Citizen Printer]
+    C --> F[Sato Printer]
+
+    B --> G[Local Database - SQLite]
+    B --> H[Network Exposure]
+
+    style C fill:#ffd
+    style B fill:#bbf
+```
 
 ## 💼 Services
 
