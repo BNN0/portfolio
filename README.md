@@ -155,6 +155,25 @@ Built intelligent agents using LangGraph and LLMs.
 ### 🧠 Key Value
 Advanced AI orchestration using modern LLM frameworks.
 
+```mermaid
+flowchart TD
+    A[User Request] --> B[FastAPI Endpoint]
+    B --> C[LangGraph Orchestrator]
+
+    C --> D[Step 1: Data Extraction]
+    C --> E[Step 2: Classification]
+    C --> F[Step 3: Decision Logic]
+
+    D --> G[LLM]
+    E --> G
+    F --> G
+
+    G --> H[Final Response]
+    H --> I[External API / System]
+
+    style C fill:#f9f
+```
+
 ## 🖨️ Multi-Brand Industrial Printing Gateway
 
 ### 📌 Problem
