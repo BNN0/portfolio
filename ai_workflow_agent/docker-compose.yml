@@ -1,0 +1,19 @@
+services:
+  bot-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    volumes:
+      - ~/.aws:/root/.aws
+
+  ngrok:
+    image: wernight/ngrok
+    depends_on:
+      - bot-api
+    environment:
+      NGROK_AUTHTOKEN: ${NGROK_AUTHTOKEN}
+    command: ngrok http --hostname=${NGROK_HOSTNAME} bot-api:80
+    ports:
+      - "4040:4040"

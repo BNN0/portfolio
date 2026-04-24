@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | Security Suite</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root[data-theme="dark"] {
+            --bg: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --text: #f8fafc;
+            --text-dim: #94a3b8;
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --success: #22c55e;
+            --error: #ef4444;
+            --border: rgba(255, 255, 255, 0.1);
+            --input-bg: rgba(0, 0, 0, 0.2);
+        }
+
+        :root[data-theme="light"] {
+            --bg: #f1f5f9;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --text: #0f172a;
+            --text-dim: #475569;
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --success: #16a34a;
+            --error: #dc2626;
+            --border: rgba(0, 0, 0, 0.1);
+            --input-bg: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .header {
+            max-width: 1200px;
+            margin: 0 auto 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .title-group h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .main-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 968px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .upload-area {
+            border: 2px dashed var(--border);
+            border-radius: 16px;
+            padding: 2.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .btn {
+            padding: 0.75rem 1.25rem;
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); }
+        
+        .btn-outline { 
+            background: transparent; 
+            border: 1px solid var(--border); 
+            color: var(--text); 
+        }
+        .btn-outline:hover { background: var(--border); }
+
+        .btn-success { background: var(--success); color: white; }
+        .btn-danger { background: var(--error); color: white; }
+
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+
+        .stats-table-container {
+            flex-grow: 1;
+            max-height: 300px;
+            overflow-y: auto;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background: var(--input-bg);
+            text-align: left;
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem;
+            color: var(--text);
+            resize: none;
+        }
+
+        .theme-toggle {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            background: var(--card-bg);
+            font-size: 1.25rem;
+        }
+
+        .status-msg {
+            padding: 1rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            display: none;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .loading-dots:after {
+            content: '.';
+            animation: dots 1.5s steps(5, end) infinite;
+        }
+        @keyframes dots { 0%, 20% { content: '.'; } 40% { content: '..'; } 60% { content: '...'; } 80%, 100% { content: ''; } }
+    </style>
+</head>
+<body data-theme="dark">
+    <header class="header">
+        <div class="title-group">
+            <h1>Phishing Admin</h1>
+            <p style="color: var(--text-dim); font-size: 0.85rem;">Panel de Administración y Control</p>
+        </div>
+        <div class="controls">
+            <button class="theme-toggle" id="theme-btn">🌙</button>
+            <a href="/admin/download-template" class="btn btn-outline" style="text-decoration: none;">
+                Plantilla
+            </a>
+        </div>
+    </header>
+
+    <main class="main-grid">
+        <!-- Modulo Izquierdo: Nueva Campaña -->
+        <section class="card">
+            <h2>Nueva Campaña</h2>
+            <p style="color: var(--text-dim); font-size: 0.9rem;">Configura y lanza el ejercicio masivo de concientización.</p>
+            
+            <div id="upload-zone" class="upload-area">
+                <span style="font-size: 2.5rem; display: block; margin-bottom: 0.5rem;">📁</span>
+                <p id="file-label">Cargar Excel de destinatarios</p>
+                <input type="file" id="file-input" accept=".xlsx, .xls" style="display: none;">
+            </div>
+
+            <button id="send-btn" class="btn btn-primary" disabled>
+                Lanzar Campaña Masiva
+            </button>
+
+            <div id="status-left" class="status-msg"></div>
+        </section>
+
+        <!-- Modulo Derecho: Seguimiento y Resultados -->
+        <div style="display: flex; flex-direction: column; gap: 2rem;">
+            <section class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h2>Resultados en Vivo</h2>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button id="refresh-stats" class="btn btn-outline" style="padding: 0.5rem;">Actualizar</button>
+                        <button id="export-btn" class="btn btn-success" style="font-size: 0.85rem;">Exportar y Limpiar</button>
+                    </div>
+                </div>
+
+                <div class="stats-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Email</th>
+                                <th>Fecha/Hora ctlr</th>
+                            </tr>
+                        </thead>
+                        <tbody id="stats-body">
+                            <tr><td colspan="2" style="text-align: center; color: var(--text-dim);">Actualizando...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="card">
+                <h2>Notificación de Seguimiento</h2>
+                <textarea id="followup-message" placeholder="Escribe el mensaje educativo para los usuarios que cayeron en la prueba..."></textarea>
+                <button id="send-followup-btn" class="btn btn-primary">
+                    Enviar Aviso Directo
+                </button>
+                <div id="status-right" class="status-msg"></div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        // --- Theme Logic ---
+        const themeBtn = document.getElementById('theme-btn');
+        let currentTheme = localStorage.getItem('theme') || 'dark';
+        
+        function applyTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            themeBtn.textContent = theme === 'dark' ? '🌙' : '☀️';
+            localStorage.setItem('theme', theme);
+        }
+        applyTheme(currentTheme);
+        themeBtn.onclick = () => {
+            const newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            applyTheme(newTheme);
+        };
+
+        // --- Core Elements ---
+        const fileInput = document.getElementById('file-input');
+        const uploadZone = document.getElementById('upload-zone');
+        const fileLabel = document.getElementById('file-label');
+        const sendBtn = document.getElementById('send-btn');
+        const statsBody = document.getElementById('stats-body');
+        const exportBtn = document.getElementById('export-btn');
+        const followupMessage = document.getElementById('followup-message');
+        const sendFollowupBtn = document.getElementById('send-followup-btn');
+
+        let selectedFile = null;
+
+        // --- Stats Logic ---
+        async function fetchStats() {
+            try {
+                const res = await fetch('/admin/stats');
+                const data = await res.json();
+                statsBody.innerHTML = '';
+                if (data.length === 0) {
+                    statsBody.innerHTML = '<tr><td colspan="2" style="text-align: center; color: var(--text-dim); padding: 2rem;">No hay registros</td></tr>';
+                } else {
+                    data.reverse().forEach(click => {
+                        const row = `<tr><td>${click.email}</td><td style="color: var(--text-dim);">${click.timestamp}</td></tr>`;
+                        statsBody.insertAdjacentHTML('beforeend', row);
+                    });
+                }
+            } catch (e) { console.error(e); }
+        }
+        document.getElementById('refresh-stats').onclick = fetchStats;
+        setInterval(fetchStats, 10000);
+        fetchStats();
+
+        // --- Campaign Logic ---
+        uploadZone.onclick = () => fileInput.click();
+        fileInput.onchange = () => {
+            if (fileInput.files.length > 0) {
+                selectedFile = fileInput.files[0];
+                fileLabel.textContent = `Listado: ${selectedFile.name}`;
+                sendBtn.disabled = false;
+            }
+        };
+
+        function showStatus(id, msg, type) {
+            const el = document.getElementById(id);
+            if (!msg) { el.style.display = 'none'; return; }
+            el.textContent = msg;
+            el.style.display = 'block';
+            el.style.color = type === 'error' ? 'var(--error)' : 'var(--success)';
+            el.style.background = type === 'error' ? 'rgba(239, 68, 68, 0.1)' : 'rgba(34, 197, 94, 0.1)';
+        }
+
+        sendBtn.onclick = async () => {
+            sendBtn.disabled = true;
+            sendBtn.innerHTML = '<span class="loading-dots">Procesando</span>';
+            try {
+                const formData = new FormData();
+                formData.append('file', selectedFile);
+                const upRes = await fetch('/admin/upload-excel', { method: 'POST', body: formData });
+                if (!upRes.ok) throw new Error('Error al subir archivo');
+                
+                const camRes = await fetch('/admin/send-campaign', { method: 'POST' });
+                const result = await camRes.json();
+                showStatus('status-left', `Enviados: ${result.stats.enviados}/${result.stats.total}`, 'success');
+            } catch (e) { showStatus('status-left', e.message, 'error'); }
+            finally { sendBtn.disabled = false; sendBtn.textContent = 'Lanzar Campaña Masiva'; }
+        };
+
+        // --- Export & Reset Logic ---
+        exportBtn.onclick = async () => {
+            // 1. Reminder about follow-up
+            if (!confirm('¿Has enviado ya los mensajes de seguimiento o concientización? Se recomienda hacerlo antes de exportar y borrar los datos, ya que después no tendrás acceso a los correos registrados.')) {
+                return;
+            }
+
+            // 2. Confirmation of export and clear
+            if (confirm('¿Confirmas que deseas finalizar la prueba y BORRAR permanentemente todos los registros? Se procederá a descargar el reporte en Excel.')) {
+                // 1. Download the Excel
+                window.location.href = '/admin/export-results';
+                
+                // 2. Wait a bit then clear
+                setTimeout(async () => {
+                    try {
+                        const res = await fetch('/admin/reset-stats', { method: 'POST' });
+                        if (res.ok) {
+                            alert('Prueba finalizada y registros borrados correctamente.');
+                            fetchStats();
+                        }
+                    } catch (e) { console.error('Error al borrar:', e); }
+                }, 1500);
+            }
+        };
+
+        // --- Follow-up Logic ---
+        sendFollowupBtn.onclick = async () => {
+            const msg = followupMessage.value.trim();
+            if (!msg) { alert('Escribe un mensaje primero'); return; }
+            
+            sendFollowupBtn.disabled = true;
+            sendFollowupBtn.innerHTML = '<span class="loading-dots">Enviando</span>';
+            try {
+                const res = await fetch('/admin/send-followup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: msg })
+                });
+                const data = await res.json();
+                showStatus('status-right', `Avisos enviados: ${data.sent}`, 'success');
+                followupMessage.value = '';
+            } catch (e) { showStatus('status-right', 'Error al enviar', 'error'); }
+            finally { sendFollowupBtn.disabled = false; sendFollowupBtn.textContent = 'Enviar Aviso Directo'; }
+        };
+    </script>
+</body>
+</html>

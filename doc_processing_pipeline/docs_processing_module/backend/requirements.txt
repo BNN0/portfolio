@@ -1,0 +1,9 @@
+fastapi[standard]
+uvicorn
+PyMuPDF
+minio
+requests
+reportlab
+pdf2image
+pikepdf
+

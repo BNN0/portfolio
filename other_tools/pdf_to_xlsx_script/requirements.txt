@@ -1,0 +1,10 @@
+numpy
+opencv-python
+pymupdf
+fastapi
+paddlepaddle
+paddleocr[all]
+pandas
+uvicorn
+tabulate
+python-multipart

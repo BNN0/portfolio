@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Confirmación y Descarga de Excel</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display text-[#0d121b] dark:text-white">
+    <div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+        <!-- Header -->
+        <header
+            class="flex items-center justify-between whitespace-nowrap border-b border-solid border-[#e7ebf3] dark:border-[#2a3447] px-4 md:px-10 py-3 bg-white dark:bg-[#1a202c]">
+            <div class="flex items-center gap-4">
+                <div class="size-8 text-primary">
+                    <span class="material-symbols-outlined text-3xl">picture_as_pdf</span>
+                </div>
+                <h2 class="text-lg font-bold leading-tight tracking-[-0.015em]">PDF Converter</h2>
+            </div>
+            <div class="flex flex-1 justify-end gap-8 items-center">
+                <nav class="hidden md:flex items-center gap-9">
+                    <a class="text-sm font-medium hover:text-primary transition-colors" href="#">Dashboard</a>
+                    <a class="text-sm font-medium hover:text-primary transition-colors" href="#">Historial</a>
+                    <a class="text-sm font-medium hover:text-primary transition-colors" href="#">Ayuda</a>
+                </nav>
+                <div class="bg-center bg-no-repeat bg-cover rounded-full size-10 border border-[#e7ebf3] dark:border-[#2a3447]"
+                    data-alt="User avatar placeholder"
+                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBm21QvS2XC-mVuCmtb0vv95IOWhCUp3zklmbN95bSP8isEx6nxRVPwhiWz9L0tgIaot9N1uRyDX4p5loemqqaV-PgRCul-EEW_QrwOMHDFnF-qFHtefR7F0PKE3kkorGlBfbgOQwd4MP2llapy0bh-oYNAt7yimfMwt0P5OiKQBGIQy5fUjHKdrmppt8TIT_0y_twBzPHbf5hG-JOFEnFJMJxRdMoPFXZEsdPun6-lTdP4YOLBinGl83Fy_4KTnINnOMuasiRRWnqb");'>
+                </div>
+            </div>
+        </header>
+        <!-- Main Content -->
+        <main class="flex-grow flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8">
+            <div class="w-full max-w-[640px] flex flex-col gap-6">
+                <!-- Success Card -->
+                <div
+                    class="bg-white dark:bg-[#1a202c] rounded-xl shadow-[0_2px_12px_rgba(0,0,0,0.08)] p-8 md:p-12 text-center animate-fade-in-up">
+                    <!-- Success Icon -->
+                    <div
+                        class="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
+                        <span
+                            class="material-symbols-outlined text-[48px] text-green-600 dark:text-green-400">check_circle</span>
+                    </div>
+                    <!-- Headlines -->
+                    <h1 class="text-2xl md:text-[32px] font-bold leading-tight tracking-tight mb-3">¡Conversión Exitosa!
+                    </h1>
+                    <p
+                        class="text-slate-500 dark:text-slate-400 text-base md:text-lg font-normal leading-relaxed mb-8 max-w-md mx-auto">
+                        Los datos han sido validados y exportados correctamente. Tu archivo está listo.
+                    </p>
+                    <!-- File Card -->
+                    <div class="mb-8">
+                        <div
+                            class="flex items-center gap-4 rounded-lg border border-[#e7ebf3] dark:border-[#2a3447] bg-[#f8f9fc] dark:bg-[#151a23] p-4 text-left">
+                            <div
+                                class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400">
+                                <span class="material-symbols-outlined text-3xl">table_view</span>
+                            </div>
+                            <div class="flex flex-col flex-grow overflow-hidden">
+                                <p class="truncate text-base font-bold text-[#0d121b] dark:text-white">
+                                    Reporte_Financiero_2023.xlsx</p>
+                                <p class="text-sm text-slate-500 dark:text-slate-400">2.4 MB • Excel validado</p>
+                            </div>
+                            <div class="flex-shrink-0">
+                                <button aria-label="Descargar ahora"
+                                    class="flex items-center justify-center text-primary hover:bg-primary/10 p-2 rounded-full transition-colors">
+                                    <span class="material-symbols-outlined">download</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Progress/Auto-download Indicator -->
+                    <div class="mb-8 flex flex-col gap-2">
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="font-medium text-slate-700 dark:text-slate-300">Descarga automática en
+                                proceso...</span>
+                            <span class="font-bold text-primary">100%</span>
+                        </div>
+                        <div class="h-2 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-700">
+                            <div class="h-full bg-primary rounded-full animate-pulse" style="width: 100%"></div>
+                        </div>
+                        <div class="mt-2">
+                            <a class="text-sm font-medium text-primary hover:text-blue-600 hover:underline transition-colors flex items-center justify-center gap-1"
+                                href="#">
+                                ¿No comenzó? Descargar manualmente
+                                <span class="material-symbols-outlined text-sm">open_in_new</span>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- Actions -->
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 w-full">
+                        <button onclick="window.location.href='/'"
+                            class="w-full sm:w-auto px-6 py-3 bg-primary hover:bg-blue-700 text-white font-medium rounded-lg shadow-sm transition-all flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined">add</span>
+                            Nueva Conversión
+                        </button>
+                        <button onclick="window.location.href='/'"
+                            class="w-full sm:w-auto px-6 py-3 bg-transparent border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-[#0d121b] dark:text-white font-medium rounded-lg transition-all">
+                            Ir al Dashboard
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const downloadBtn = document.querySelector('button[aria-label="Descargar ahora"]');
+            const manualLink = document.querySelector('a.text-primary.hover\\:text-blue-600');
+
+            async function triggerDownload() {
+                try {
+                    // We fetch all results from server to generate the Excel
+                    const resStatus = await fetch('/api/results');
+                    if (!resStatus.ok) return;
+                    const currentResults = await resStatus.json();
+                    if (Object.keys(currentResults).length === 0) return;
+
+                    const response = await fetch('/api/export', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(currentResults)
+                    });
+
+                    if (response.ok) {
+                        const blob = await response.blob();
+                        const url = window.URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = `Extraccion_${new Date().toISOString().split('T')[0]}.xlsx`;
+                        document.body.appendChild(a);
+                        a.click();
+                        a.remove();
+                    }
+                } catch (err) {
+                    console.error('Download error:', err);
+                }
+            }
+
+            if (downloadBtn) downloadBtn.onclick = triggerDownload;
+            if (manualLink) manualLink.onclick = (e) => {
+                e.preventDefault();
+                triggerDownload();
+            };
+
+            // Auto-show local date
+            const dateEl = document.querySelector('.text-slate-500.dark\\:text-slate-400.text-sm');
+            if (dateEl) {
+                const now = new Date();
+                dateEl.textContent = `Generado el ${now.toLocaleDateString()} • Excel validado`;
+            }
+        });
+    </script>
+</body>
+
+</html>

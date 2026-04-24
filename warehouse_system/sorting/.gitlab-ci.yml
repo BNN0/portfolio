@@ -1,0 +1,118 @@
+---
+
+default:
+  image: mcr.microsoft.com/dotnet/sdk:6.0
+  tags:
+    - runner-aws
+stages:
+    - build
+    - test
+    - test-env
+
+variables:
+  TEST_PATH: 'LuxxoticaSorting.Unitest'
+  DEPLOYMENT_DEV_URL: "http://35.192.47.202:8880"
+  CONTAINER_NAME: 'test-uat-sorting-back'
+before_script:
+  - cd $TEST_PATH
+
+asp_net_build:
+  stage: build
+  script:
+    - 'dotnet restore'
+    - 'dotnet build'
+test:
+  stage: test
+  before_script:
+    - echo | dotnet --version
+    - dotnet restore
+    - dotnet tool install dotnet-reportgenerator-globaltool --tool-path tools
+  script:
+    - dotnet test Luxottica.sln --collect="XPlat Code Coverage" --logger:"junit;LogFilePath=testresult.xml"
+    - ls -ld ${CI_PROJECT_DIR}/**/TestResults/*
+    - ./tools/reportgenerator "-reports:${CI_PROJECT_DIR}/**/TestResults/*/coverage.cobertura.xml" "-targetdir:Reports_Coverage" -reportTypes:TextSummary;
+    - ./tools/reportgenerator "-reports:${CI_PROJECT_DIR}/**/TestResults/*/coverage.cobertura.xml" "-targetdir:Reports_Coverage" -reportTypes:Html;
+    - cat ./Reports_Coverage/Summary.txt
+  coverage: /Line coverage[\s\S].+%/
+  artifacts: 
+    reports:
+      junit:
+        - "*/testresult.xml" 
+    paths:
+      - Reports_Coverage/
+  rules:
+    - if: $CI_MERGE_REQUEST_ID
+    - if: $CI_COMMIT_BRANCH  == "main"
+    - if: $CI_COMMIT_BRANCH  == "dev"
+    - if: $CI_COMMIT_BRANCH =~ /^release/
+    - if: $CI_COMMIT_BRANCH =~ /^test/
+    - if: $CI_COMMIT_BRANCH =~ /^feature/
+
+  when:
+    always
+
+docker-build:
+  # Use the official docker image.
+  image: docker:latest
+  stage: build
+  services:
+    - docker:dind
+  variables:
+    DOCKERFILE_SRC: "."
+    DOCKER_IMAGE_NAME: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  # All branches are tagged with $DOCKER_IMAGE_NAME (defaults to commit ref slug)
+  # Default branch is also tagged with `latest`
+  script:
+    - docker build --pull -t "$DOCKER_IMAGE_NAME" $DOCKERFILE_SRC
+    - docker push "$DOCKER_IMAGE_NAME"
+    - |
+      if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
+        docker tag "$DOCKER_IMAGE_NAME" "$CI_REGISTRY_IMAGE:latest"
+        docker push "$CI_REGISTRY_IMAGE:latest"
+      fi
+  # Run this job in a branch where a Dockerfile exists
+  rules:
+    - if: $CI_COMMIT_BRANCH
+      exists:
+        - Dockerfile
+  needs:
+    - asp_net_build
+
+
+Deploy ENV:
+  stage: test-env
+  tags:
+    - runner-shell-1
+  environment:
+    name: Dev
+    url: $DEPLOYMENT_DEV_URL
+    on_stop: Stop TestEnv
+  inherit:
+    default: false
+  before_script:
+    - docker stop $CONTAINER_NAME || true
+    - docker rm $CONTAINER_NAME || true
+  script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - docker image rm --force $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG || true
+    - docker run --rm --name $CONTAINER_NAME -d -p 8880:80 $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+
+
+Stop TestEnv:
+  stage: test-env
+  inherit:
+    default: false
+  tags:
+    - runner-shell-1
+  before_script:
+    - docker ps
+  script:
+    - docker stop $CONTAINER_NAME
+  environment:
+    name: Dev
+    action: stop
+  when: manual
+
+

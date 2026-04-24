@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+python-multipart
+pydantic
+pydantic[email]
+python-dotenv
+requests
+reportlab
+httpx
+
+# Opcional: Para envío de correos real
+sendgrid
+boto3 # Para AWS SES
+aiosmtplib # Para SMTP async

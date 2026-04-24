@@ -1,0 +1,10 @@
+python-dotenv
+openpyxl
+mjml
+requests
+pydantic
+flask
+fastapi
+uvicorn
+python-multipart
+css-inline

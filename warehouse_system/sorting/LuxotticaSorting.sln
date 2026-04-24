@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33829.357
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuxotticaSorting", "LuxotticaSorting\LuxotticaSorting.csproj", "{D44CD08E-D531-41C4-B1BA-EA7AD699E78B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuxotticaSorting.ApplicationServices", "LuxotticaSorting.ApplicationServices\LuxotticaSorting.ApplicationServices.csproj", "{C62B8204-5191-47CC-9C1F-030AD3E740AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuxotticaSorting.ApplicationServices.Shared", "LuxotticaSorting.ApplicationServices.Shared\LuxotticaSorting.ApplicationServices.Shared.csproj", "{1EB81211-A4AC-4C98-8874-EBC4E7852055}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuxotticaSorting.Core", "LuxotticaSorting.Core\LuxotticaSorting.Core.csproj", "{BE02E8C8-E736-4808-A89A-B181A325303B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuxotticaSorting.DataAccess", "LuxotticaSorting.DataAccess\LuxotticaSorting.DataAccess.csproj", "{EF3E8C02-1496-42EA-913E-E645334FD245}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuxxoticaSorting.Unitest", "LuxxoticaSorting.Unitest\LuxxoticaSorting.Unitest.csproj", "{0BD6B757-AEA0-4EB4-85AC-0B1EF3B5B28C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D44CD08E-D531-41C4-B1BA-EA7AD699E78B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D44CD08E-D531-41C4-B1BA-EA7AD699E78B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D44CD08E-D531-41C4-B1BA-EA7AD699E78B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D44CD08E-D531-41C4-B1BA-EA7AD699E78B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C62B8204-5191-47CC-9C1F-030AD3E740AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C62B8204-5191-47CC-9C1F-030AD3E740AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C62B8204-5191-47CC-9C1F-030AD3E740AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C62B8204-5191-47CC-9C1F-030AD3E740AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EB81211-A4AC-4C98-8874-EBC4E7852055}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EB81211-A4AC-4C98-8874-EBC4E7852055}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EB81211-A4AC-4C98-8874-EBC4E7852055}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EB81211-A4AC-4C98-8874-EBC4E7852055}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE02E8C8-E736-4808-A89A-B181A325303B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE02E8C8-E736-4808-A89A-B181A325303B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE02E8C8-E736-4808-A89A-B181A325303B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE02E8C8-E736-4808-A89A-B181A325303B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF3E8C02-1496-42EA-913E-E645334FD245}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF3E8C02-1496-42EA-913E-E645334FD245}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF3E8C02-1496-42EA-913E-E645334FD245}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF3E8C02-1496-42EA-913E-E645334FD245}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BD6B757-AEA0-4EB4-85AC-0B1EF3B5B28C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BD6B757-AEA0-4EB4-85AC-0B1EF3B5B28C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BD6B757-AEA0-4EB4-85AC-0B1EF3B5B28C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BD6B757-AEA0-4EB4-85AC-0B1EF3B5B28C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4337DD61-E7C0-4161-B33F-F8CA5207F89B}
+	EndGlobalSection
+EndGlobal

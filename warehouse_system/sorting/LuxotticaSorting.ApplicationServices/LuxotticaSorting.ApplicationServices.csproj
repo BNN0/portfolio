@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.21" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LuxotticaSorting.ApplicationServices.Shared\LuxotticaSorting.ApplicationServices.Shared.csproj" />
+    <ProjectReference Include="..\LuxotticaSorting.Core\LuxotticaSorting.Core.csproj" />
+    <ProjectReference Include="..\LuxotticaSorting.DataAccess\LuxotticaSorting.DataAccess.csproj" />
+  </ItemGroup>
+
+</Project>

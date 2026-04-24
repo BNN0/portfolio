@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A | Security Awareness Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #004da1;
+            --secondary: #e4002b;
+            --blue-lowcase: #004da1;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-dim: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', 'Helvetica', 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Corporate Header */
+        header {
+            background-color: white;
+            padding: 1.5rem 2rem;
+            border-bottom: 3px solid var(--primary);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-img {
+            max-height: 50px;
+            width: auto;
+            display: block;
+        }
+
+        .portal-name {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Main Content */
+        .page-container {
+            max-width: 800px;
+            margin: 3rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .awareness-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .card-header {
+            background-color: #f1f5f9;
+            padding: 1.5rem 2.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-icon {
+            color: var(--primary);
+        }
+
+        .card-body {
+            padding: 2.5rem;
+        }
+
+        .main-title {
+            font-size: 1.75rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .awareness-text {
+            font-size: 1.1rem;
+            color: var(--text-main);
+            margin-bottom: 2rem;
+        }
+
+        .highlight-box {
+            background-color: #fef2f2;
+            border-left: 4px solid var(--secondary);
+            padding: 1.5rem;
+            margin-bottom: 2.5rem;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .highlight-box h3 {
+            color: var(--secondary);
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .tips-section h4 {
+            font-size: 1.25rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 0.5rem;
+        }
+
+        .tip-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .tip-item {
+            display: flex;
+            gap: 1.25rem;
+        }
+
+        .tip-icon {
+            flex-shrink: 0;
+            width: 44px;
+            height: 44px;
+            background-color: #e0e7ff;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--primary);
+        }
+
+        .tip-content strong {
+            display: block;
+            font-size: 1rem;
+            color: var(--text-main);
+            margin-bottom: 0.25rem;
+        }
+
+        .tip-content p {
+            font-size: 0.95rem;
+            color: var(--text-dim);
+        }
+
+        /* Footer Info */
+        .footer-info {
+            text-align: center;
+            margin-top: 2rem;
+            color: var(--text-dim);
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 640px) {
+            .card-body { padding: 1.5rem; }
+            .header-logo { font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="/static/logo.png" alt="A Logo" class="logo-img">
+        <div class="portal-name">Security Portal</div>
+    </header>
+
+    <main class="page-container">
+        <div class="awareness-card">
+            <div class="card-header">
+                <div class="header-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/>
+                    </svg>
+                </div>
+                <h2 style="font-size: 1.1rem; color: #475569;">Internal Communication - IT Division</h2>
+            </div>
+            
+            <div class="card-body">
+                <h1 class="main-title">Prueba de Seguridad Finalizada</h1>
+                <p class="awareness-text">
+                    Has sido parte de una <strong>simulación de phishing controlada</strong>. Este ejercicio es fundamental para fortalecer nuestra cultura de seguridad digital.
+                </p>
+
+                <div class="highlight-box">
+                    <h3>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+                        </svg>
+                        ¿Qué acaba de suceder?
+                    </h3>
+                    <p>Al hacer clic en el enlace del correo, has simulado una acción que en un escenario real podría comprometer información sensible. No se ha extraído ningún dato real; esto es solo para fines educativos.</p>
+                </div>
+
+                <section class="tips-section">
+                    <h4>3 Claves para detectar Phishing</h4>
+                    <div class="tip-list">
+                        <div class="tip-item">
+                            <div class="tip-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                                </svg>
+                            </div>
+                            <div class="tip-content">
+                                <strong>Remitente Extraño</strong>
+                                <p>Desconfía si el dominio no coincide exactamente con el oficial (ej: @micompany.co en lugar de @micompany.com).</p>
+                            </div>
+                        </div>
+                        <div class="tip-item">
+                            <div class="tip-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+                                </svg>
+                            </div>
+                            <div class="tip-content">
+                                <strong>Sentido de Urgencia</strong>
+                                <p>Los atacantes suelen usar mensajes alarmantes como "Tu cuenta será bloqueada en 5 minutos" para forzarte a actuar rápido.</p>
+                            </div>
+                        </div>
+                        <div class="tip-item">
+                            <div class="tip-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                                </svg>
+                            </div>
+                            <div class="tip-content">
+                                <strong>Enlaces Sospechosos</strong>
+                                <p>Antes de hacer clic, posiciona el ratón sobre el enlace para ver la dirección real en la barra inferior del navegador.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <div class="footer-info">
+            <p>© 2026 A Inc. Information Security Awareness Program.</p>
+            <p>Confidential - Internal Use Only</p>
+        </div>
+    </main>
+</body>
+</html>

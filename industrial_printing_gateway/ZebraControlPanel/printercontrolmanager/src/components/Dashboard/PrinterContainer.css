@@ -1,0 +1,275 @@
+/* PrinterContainer.css */
+
+.printer-card {
+  --background: linear-gradient(135deg, rgba(3, 77, 235, 0.1) 0%, rgba(3, 77, 235, 0.05) 100%);
+  border: 1px solid rgba(3, 77, 235, 0.2);
+  border-radius: 12px;
+  margin: 12px 0;
+  box-shadow: 0 4px 12px rgba(3, 77, 235, 0.15);
+}
+
+.printer-card-content {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Header Section */
+.printer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+}
+
+.printer-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.printer-icon {
+  font-size: 32px;
+  color: #034deb;
+  min-width: 32px;
+}
+
+.printer-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.printer-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.printer-specs {
+  font-size: 12px;
+  color: #888888;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Status Chip */
+.status-chip {
+  --background: transparent;
+  border: 1px solid currentColor;
+  padding: 6px 10px;
+  height: 28px;
+  border-radius: 14px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.status-chip ion-icon {
+  font-size: 8px;
+  margin-right: 2px;
+}
+
+.status-chip.connected {
+  color: #22c55e;
+  border-color: #22c55e;
+  background: rgba(34, 197, 94, 0.1);
+}
+
+.status-chip.disconnected {
+  color: #ef4444;
+  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.status-text {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Divider */
+.printer-divider {
+  height: 2px;
+  background: linear-gradient(90deg, rgba(3, 77, 235, 0.3) 0%, rgba(3, 77, 235, 0.1) 100%);
+  border-radius: 1px;
+  margin: 4px 0;
+}
+
+/* Actions Section */
+.printer-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.test-button {
+  --background: #034deb;
+  --background-hover: #0140c4;
+  --background-activated: #0237a8;
+  --color: #ffffff;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --padding-top: 12px;
+  --padding-bottom: 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  flex: 1;
+  text-transform: none;
+  letter-spacing: 0;
+  min-height: 44px;
+}
+
+.test-button:disabled {
+  --background: rgba(3, 77, 235, 0.3);
+  --color: rgba(255, 255, 255, 0.5);
+  opacity: 0.6;
+}
+
+.test-button ion-icon {
+  font-size: 18px;
+  margin-right: 6px;
+}
+
+.settings-button {
+  --background: transparent;
+  --background-hover: rgba(127, 127, 127, 0.2);
+  --background-activated: rgba(127, 127, 127, 0.3);
+  --color: #7f7f7f;
+  --border-radius: 8px;
+  --padding-start: 12px;
+  --padding-end: 12px;
+  --padding-top: 12px;
+  --padding-bottom: 12px;
+  min-width: 44px;
+  min-height: 44px;
+  border: 1px solid rgba(127, 127, 127, 0.3);
+}
+
+.settings-button ion-icon {
+  font-size: 20px;
+}
+
+/* Toggle Section */
+.printer-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.enable-toggle {
+  --handle-background: #ffffff;
+  --track-background: rgba(127, 127, 127, 0.3);
+  --track-background-checked: #034deb;
+  --handle-background-checked: #ffffff;
+}
+
+.enable-toggle::part(container) {
+  order: 2;
+}
+
+.toggle-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #888888;
+  margin-right: 8px;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .printer-card-content {
+    padding: 12px;
+  }
+
+  .printer-name {
+    font-size: 15px;
+  }
+
+  .printer-specs {
+    font-size: 11px;
+  }
+
+  .status-chip {
+    font-size: 10px;
+    padding: 5px 8px;
+  }
+
+  .test-button {
+    --padding-start: 12px;
+    --padding-end: 12px;
+    --padding-top: 10px;
+    --padding-bottom: 10px;
+    font-size: 13px;
+    min-height: 40px;
+  }
+
+  .settings-button {
+    min-width: 40px;
+    min-height: 40px;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .printer-card {
+    --background: linear-gradient(135deg, rgba(3, 77, 235, 0.15) 0%, rgba(3, 77, 235, 0.08) 100%);
+  }
+
+  .printer-name {
+    color: #ffffff;
+  }
+
+  .printer-specs {
+    color: #888888;
+  }
+
+  .toggle-label {
+    color: #888888;
+  }
+}
+
+/* Animations */
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.test-button:active {
+  animation: pulse 0.3s ease-in-out;
+}
+
+/* Hover Effects */
+.printer-card:hover {
+  box-shadow: 0 6px 16px rgba(3, 77, 235, 0.25);
+  border-color: rgba(3, 77, 235, 0.4);
+}
+
+.settings-button:hover ion-icon {
+  color: #034deb;
+}

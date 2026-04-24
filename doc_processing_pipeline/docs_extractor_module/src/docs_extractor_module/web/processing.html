@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Procesamiento de Documentos - DocConverter</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Theme Configuration -->
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <!-- Material Symbols -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="/style.css">
+    <!-- Dynamic Processing Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const progressBar = document.querySelector('.bg-primary.transition-all');
+            const progressPercentage = document.querySelector('.text-primary.font-bold');
+            const statusText = document.querySelector('.animate-pulse');
+            const stepsChecklist = document.querySelectorAll('.flex.gap-4.py-2.items-center');
+
+            // Parse filenames from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const filesToTrack = urlParams.get('files')?.split(',') || [];
+
+            async function updateStatus() {
+                try {
+                    const response = await fetch('/api/status');
+                    if (!response.ok) return;
+
+                    const statuses = await response.json();
+
+                    const currentStatuses = {};
+                    if (filesToTrack.length > 0) {
+                        filesToTrack.forEach(name => {
+                            if (statuses[name] !== undefined) {
+                                currentStatuses[name] = statuses[name];
+                            }
+                        });
+                    } else {
+                        Object.assign(currentStatuses, statuses);
+                    }
+
+                    const filenames = Object.keys(currentStatuses);
+                    if (filenames.length === 0) return;
+
+                    let totalProgress = 0;
+                    let allFinished = true;
+                    let currentFile = "";
+                    let currentStepMsg = "";
+
+                    filenames.forEach(name => {
+                        const prog = currentStatuses[name];
+                        if (prog === -1) {
+                            // Error handling
+                        } else if (prog < 100) {
+                            allFinished = false;
+                            currentFile = name;
+                            if (prog <= 5) currentStepMsg = "Recibido...";
+                            else if (prog <= 20) currentStepMsg = "Subiendo a S3...";
+                            else if (prog <= 40) currentStepMsg = "Leyendo para IA...";
+                            else if (prog <= 70) currentStepMsg = "Consultando AI Agent...";
+                            else currentStepMsg = "Finalizando...";
+                        }
+                        totalProgress += (prog === -1 ? 0 : prog);
+                    });
+
+                    const averageProgress = Math.round(totalProgress / filenames.length);
+
+                    // Update UI
+                    progressBar.style.width = `${averageProgress}%`;
+                    progressPercentage.textContent = `${averageProgress}%`;
+
+                    if (allFinished) {
+                        statusText.textContent = "¡Procesamiento completado!";
+                        statusText.classList.remove('animate-pulse');
+
+                        // Final redirect
+                        setTimeout(() => {
+                            window.location.href = "/edit.html";
+                        }, 1000);
+                    } else {
+                        statusText.textContent = `Procesando ${currentFile}: ${currentStepMsg}`;
+                    }
+
+                    // Update checklist icons based on progress
+                    if (averageProgress >= 10) {
+                        setStepCompleted(0); // Carga completada
+                    }
+                    if (averageProgress >= 80) {
+                        setStepCompleted(1); // Extrayendo datos
+                    }
+                    if (averageProgress === 100) {
+                        setStepCompleted(2); // Generando Excel
+                    }
+
+                } catch (error) {
+                    console.error('Error fetching status:', error);
+                }
+            }
+
+            function setStepCompleted(index) {
+                const step = stepsChecklist[index];
+                if (!step) return;
+
+                const iconContainer = step.querySelector('.flex-shrink-0');
+                const labelText = step.querySelector('p');
+
+                // Si ya tiene el check verde, no hacer nada
+                if (iconContainer.classList.contains('bg-green-500')) return;
+
+                iconContainer.innerHTML = '<span class="material-symbols-outlined text-[16px] font-bold">check</span>';
+                iconContainer.className = "flex-shrink-0 size-6 rounded-full bg-green-500 text-white flex items-center justify-center";
+                labelText.classList.add('text-[#0d121b]', 'dark:text-gray-300');
+                labelText.classList.remove('text-primary', 'font-bold');
+
+                // Start spinner on NEXT step if available
+                if (index + 1 < stepsChecklist.length) {
+                    const nextStep = stepsChecklist[index + 1];
+                    const nextIcon = nextStep.querySelector('.flex-shrink-0');
+                    if (nextIcon && !nextIcon.classList.contains('bg-green-500')) {
+                        nextIcon.innerHTML = '<div class="absolute inset-0 rounded-full border-2 border-primary border-t-transparent animate-spin"></div>';
+                        nextIcon.className = "flex-shrink-0 size-6 rounded-full border-2 border-primary text-primary flex items-center justify-center relative";
+                        const p = nextStep.querySelector('p');
+                        if (p) p.classList.add('text-primary', 'font-bold');
+                    }
+                }
+            }
+
+            const interval = setInterval(() => {
+                updateStatus();
+                const progressStr = progressPercentage.textContent;
+                const progress = parseInt(progressStr);
+                if (progress === 100) clearInterval(interval);
+            }, 1000);
+        });
+    </script>
+</head>
+
+<body
+    class="font-display bg-background-light dark:bg-background-dark text-[#0d121b] dark:text-white min-h-screen flex flex-col overflow-x-hidden">
+    <!-- Top Navigation -->
+    <header
+        class="flex items-center justify-between whitespace-nowrap border-b border-solid border-[#e7ebf3] dark:border-[#2a3441] bg-white dark:bg-[#1a2230] px-10 py-3 sticky top-0 z-50">
+        <div class="flex items-center gap-4 text-[#0d121b] dark:text-white">
+            <div class="size-8 text-primary">
+                <svg class="w-full h-full" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                    <g clip-path="url(#clip0_6_330)">
+                        <path clip-rule="evenodd"
+                            d="M24 0.757355L47.2426 24L24 47.2426L0.757355 24L24 0.757355ZM21 35.7574V12.2426L9.24264 24L21 35.7574Z"
+                            fill="currentColor" fill-rule="evenodd"></path>
+                    </g>
+                    <defs>
+                        <clippath id="clip0_6_330">
+                            <rect height="48" width="48"></rect>
+                        </clippath>
+                    </defs>
+                </svg>
+            </div>
+            <h2 class="text-lg font-bold leading-tight tracking-[-0.015em]">DocConverter</h2>
+        </div>
+        <div class="flex flex-1 justify-end gap-8">
+            <div class="flex gap-2">
+                <button
+                    class="flex size-10 cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-[#e7ebf3] dark:bg-[#2a3441] text-[#0d121b] dark:text-white hover:bg-[#dce3ef] dark:hover:bg-[#364252] transition-colors">
+                    <span class="material-symbols-outlined text-[20px]">notifications</span>
+                </button>
+                <button
+                    class="flex size-10 cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-[#e7ebf3] dark:bg-[#2a3441] text-[#0d121b] dark:text-white hover:bg-[#dce3ef] dark:hover:bg-[#364252] transition-colors">
+                    <span class="material-symbols-outlined text-[20px]">settings</span>
+                </button>
+            </div>
+            <div class="bg-center bg-no-repeat bg-cover rounded-full size-10 border border-[#e7ebf3] dark:border-[#2a3441]"
+                data-alt="User profile avatar showing a smiling person"
+                style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAYYkgSXDcDUoSQ3wUAeomHHgn-oM1G2zRfmT58Q2JOWd3AKk7OjSLtJpv9HC_bMnQ6UAImPGa1VkFZvhzMa81xJ_j6HWbC26d5o2U3ZY5KOq0wzhuGCtRfVk4wIC31nVd6MlcktrS-Ec_CpLMIb5aGrW9ZLpqDx_VoJteZ9rjS4L7hEENaVHUo9N5vOTcdY67nzVIN4eV4P9Xsr0QQlecGKjNu2mlaJEukRgUUJdDzfC5Uom_qs5ZXKApfA6hlqrJu31ltghg15j3U");'>
+            </div>
+        </div>
+    </header>
+    <!-- Main Content Layout -->
+    <main class="flex-1 flex flex-col items-center justify-center p-6 md:p-12">
+        <div class="w-full max-w-[640px] flex flex-col gap-6">
+            <!-- Central Status Card -->
+            <div
+                class="bg-white dark:bg-[#1e2736] rounded-xl shadow-lg border border-[#e7ebf3] dark:border-[#2a3441] overflow-hidden p-8 flex flex-col gap-8">
+                <!-- Hero Section: Icon + Title -->
+                <div class="flex flex-col items-center text-center gap-4">
+                    <div class="relative flex items-center justify-center">
+                        <div
+                            class="size-16 rounded-full bg-primary/10 flex items-center justify-center text-primary z-10">
+                            <span class="material-symbols-outlined text-[32px]">sync_alt</span>
+                        </div>
+                        <!-- Decorative icons -->
+                        <div class="absolute -left-12 opacity-50 text-gray-400 dark:text-gray-500 transform scale-75">
+                            <span class="material-symbols-outlined text-[48px]">picture_as_pdf</span>
+                        </div>
+                        <div class="absolute -right-12 opacity-50 text-gray-400 dark:text-gray-500 transform scale-75">
+                            <span class="material-symbols-outlined text-[48px]">table_view</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <h1 class="text-[#0d121b] dark:text-white tracking-tight text-2xl font-bold leading-tight">
+                            Procesando Documento...</h1>
+                        <p class="text-[#4c669a] dark:text-gray-400 text-sm font-normal">Convirtiendo su archivo PDF a
+                            formato Excel para validación.</p>
+                    </div>
+                </div>
+                <!-- Progress Section -->
+                <div class="flex flex-col gap-3">
+                    <div class="flex gap-6 justify-between items-end">
+                        <p class="text-[#0d121b] dark:text-gray-200 text-sm font-medium leading-normal animate-pulse">
+                            Iniciando procesamiento...</p>
+                        <p class="text-primary text-sm font-bold leading-normal">0%</p>
+                    </div>
+                    <div class="rounded-full bg-[#cfd7e7] dark:bg-gray-700 h-2 overflow-hidden">
+                        <div class="h-full rounded-full bg-primary transition-all duration-500 ease-out"
+                            style="width: 0%;"></div>
+                    </div>
+                    <p class="text-[#4c669a] dark:text-gray-500 text-xs font-normal leading-normal text-right">Tiempo
+                        estimado: calculando...</p>
+                </div>
+                <!-- Divider -->
+                <div class="h-px bg-[#e7ebf3] dark:bg-[#2a3441] w-full"></div>
+                <!-- Steps Checklist -->
+                <div class="flex flex-col gap-1">
+                    <!-- Pending Step 1 (will be updated by JS) -->
+                    <div class="flex gap-4 py-2 items-center group">
+                        <div
+                            class="flex-shrink-0 size-6 rounded-full border-2 border-[#cfd7e7] dark:border-gray-600 bg-transparent flex items-center justify-center text-primary">
+                        </div>
+                        <p class="text-[#4c669a] dark:text-gray-400 text-sm font-normal leading-normal">Carga de archivo
+                            completada</p>
+                    </div>
+                    <!-- Pending Step 2 -->
+                    <div class="flex gap-4 py-2 items-center opacity-50">
+                        <div
+                            class="flex-shrink-0 size-6 rounded-full border-2 border-[#cfd7e7] dark:border-gray-600 bg-transparent">
+                        </div>
+                        <p class="text-[#0d121b] dark:text-gray-400 text-sm font-normal leading-normal">Extrayendo datos
+                            de tablas</p>
+                    </div>
+                    <!-- Pending Step 3 -->
+                    <div class="flex gap-4 py-2 items-center opacity-50">
+                        <div
+                            class="flex-shrink-0 size-6 rounded-full border-2 border-[#cfd7e7] dark:border-gray-600 bg-transparent">
+                        </div>
+                        <p class="text-[#0d121b] dark:text-gray-400 text-sm font-normal leading-normal">Generando
+                            archivo Excel</p>
+                    </div>
+                </div>
+                <!-- Actions Footer -->
+                <div class="pt-4 flex justify-center w-full">
+                    <button onclick="window.location.href='/'"
+                        class="px-6 py-2.5 rounded-lg border border-[#e7ebf3] dark:border-[#364252] text-[#4c669a] dark:text-gray-300 font-medium text-sm hover:bg-gray-50 dark:hover:bg-[#2a3441] hover:text-[#0d121b] dark:hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20">
+                        Cancelar Procesamiento
+                    </button>
+                </div>
+            </div>
+            <!-- Safe Exit Link -->
+            <div class="text-center">
+                <a class="inline-flex items-center gap-1 text-sm text-[#4c669a] dark:text-gray-500 hover:text-primary dark:hover:text-primary transition-colors"
+                    href="/">
+                    <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+                    Volver al panel principal
+                </a>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

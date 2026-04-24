@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Text to Speech
+    </title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-secondary-fixed-variant": "#5a5c5e",
+                        "secondary": "#5e5f61",
+                        "secondary-fixed-dim": "#d4d4d7",
+                        "primary-fixed": "#dde1ff",
+                        "on-surface-variant": "#586064",
+                        "outline-variant": "#abb3b7",
+                        "outline": "#737c7f",
+                        "error": "#9e3f4e",
+                        "secondary-dim": "#525355",
+                        "primary-fixed-dim": "#cbd2ff",
+                        "surface-bright": "#f8f9fa",
+                        "on-error": "#fff7f7",
+                        "on-primary-fixed-variant": "#0846ed",
+                        "on-surface": "#2b3437",
+                        "on-primary": "#f9f6ff",
+                        "surface-container-highest": "#dbe4e7",
+                        "on-secondary-fixed": "#3e3f42",
+                        "surface-variant": "#dbe4e7",
+                        "on-secondary-container": "#505254",
+                        "inverse-on-surface": "#9b9d9e",
+                        "surface-container": "#eaeff1",
+                        "tertiary-fixed-dim": "#d8cced",
+                        "tertiary-container": "#e7dafc",
+                        "secondary-fixed": "#e2e2e5",
+                        "surface": "#f8f9fa",
+                        "on-tertiary-container": "#544c67",
+                        "background": "#f8f9fa",
+                        "surface-container-high": "#e3e9ec",
+                        "tertiary": "#645b77",
+                        "surface-container-low": "#f1f4f6",
+                        "tertiary-dim": "#584f6a",
+                        "on-tertiary-fixed-variant": "#5e5571",
+                        "primary-dim": "#003eda",
+                        "on-primary-container": "#003dd8",
+                        "surface-dim": "#d1dce0",
+                        "error-dim": "#4f0116",
+                        "primary": "#124af0",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error-container": "#782232",
+                        "inverse-primary": "#6d88ff",
+                        "inverse-surface": "#0c0f10",
+                        "on-background": "#2b3437",
+                        "primary-container": "#dde1ff",
+                        "error-container": "#ff8b9a",
+                        "on-primary-fixed": "#002fac",
+                        "on-tertiary": "#fdf7ff",
+                        "on-secondary": "#f9f9fb",
+                        "surface-tint": "#124af0",
+                        "secondary-container": "#e2e2e5",
+                        "on-tertiary-fixed": "#423953",
+                        "tertiary-fixed": "#e7dafc"
+                    },
+                    fontFamily: {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Manrope"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+
+<body class="bg-surface font-body text-on-surface antialiased">
+    <!-- TopAppBar -->
+    <header class="fixed top-0 w-full z-50 bg-white/85 backdrop-blur-xl flex items-center justify-between px-8 h-16 shadow-[0_1px_0_0_rgba(0,0,0,0.03)]">
+        <div class="flex items-center gap-8">
+            <span class="text-lg font-bold tracking-tighter text-slate-900 font-['Inter']">Text to Speech</span>
+        </div>
+    </header>
+    <main class="pt-24 pb-32 px-12 min-h-screen bg-surface-bright">
+        <!-- Synthesis Engine Section -->
+        <section class="max-w-5xl mx-auto mb-16">
+            <div class="mb-8">
+                <h1 class="text-3xl font-extrabold tracking-tighter text-on-surface font-headline mb-2">Text to Speech</h1>
+                <p class="text-on-surface-variant font-body">Convert text into natural speech</p>
+            </div>
+            <div class="bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/10 shadow-sm relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
+                    <span class="material-symbols-outlined text-9xl">auto_awesome</span>
+                </div>
+                <div class="grid grid-cols-12 gap-8">
+                    <!-- Text Prompt -->
+                    <div class="col-span-12 lg:col-span-7">
+                        <textarea id="text-input" class="w-full h-48 bg-surface-container-low border-none rounded-xl p-6 text-lg focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-outline-variant/50 resize-none font-body" placeholder="Escribe el texto aquí para convertirlo a voz..."></textarea>
+                    </div>
+                    <!-- Simplified Configuration -->
+                    <div class="col-span-12 lg:col-span-5 flex flex-col justify-between">
+                        <div class="space-y-6">
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-widest text-outline mb-3 font-label">Idioma</label>
+                                <select id="language-select" class="w-full bg-surface-container-low border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary/20 transition-all font-medium text-on-surface">
+                                    <option value="en">English</option>
+                                    <option value="fr">French</option>
+                                    <option value="zh-CN">Mandarin (China Mainland)</option>
+                                    <option value="zh-TW">Mandarin (Taiwan)</option>
+                                    <option value="pt">Portuguese</option>
+                                    <option value="es" selected>Spanish</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-widest text-outline mb-3 font-label">Acento</label>
+                                <select id="accent-select" class="w-full bg-surface-container-low border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary/20 transition-all font-medium text-on-surface">
+                                    <!-- Options will be populated dynamically -->
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mt-8">
+                            <button id="synthesize-btn" class="w-full bg-gradient-to-br from-primary to-primary-dim text-white py-4 rounded-full font-bold shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3">
+                                <span class="material-symbols-outlined">bolt</span>
+                                <span id="btn-text">Synthesize Audio</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Library Section -->
+        <section class="max-w-5xl mx-auto">
+            <div class="flex items-center justify-between mb-10">
+                <div>
+                    <h2 class="text-2xl font-extrabold tracking-tighter text-on-surface font-headline">Recent Renders</h2>
+                    <p class="text-on-surface-variant text-sm mt-1 font-body">Your history</p>
+                </div>
+            </div>
+            <div id="history-container" class="space-y-4">
+                <!-- History items will be injected here -->
+                <p class="text-on-surface-variant text-center py-12">No hay audios generados recientemente.</p>
+            </div>
+        </section>
+    </main>
+    <script>
+        const textInput = document.getElementById('text-input');
+        const languageSelect = document.getElementById('language-select');
+        const accentSelect = document.getElementById('accent-select');
+        const synthesizeBtn = document.getElementById('synthesize-btn');
+        const btnText = document.getElementById('btn-text');
+        const historyContainer = document.getElementById('history-container');
+
+        let currentAudio = null;
+        let currentBtn = null;
+
+        async function loadHistory() {
+            try {
+                const response = await fetch('/history');
+                const data = await response.json();
+                renderHistory(data.files);
+            } catch (error) {
+                console.error('Error loading history:', error);
+            }
+        }
+
+        function renderHistory(files) {
+            if (!files || files.length === 0) {
+                historyContainer.innerHTML = '<p class="text-on-surface-variant text-center py-12">No hay audios generados recientemente.</p>';
+                return;
+            }
+
+            historyContainer.innerHTML = files.map(file => {
+                // Extract date from filename voice_YYYY-MM-DD_HH-MM-SS.mp3
+                const parts = file.replace('voice_', '').replace('.mp3', '').split('_');
+                const dateStr = parts[0];
+                const timeStr = parts[1] ? parts[1].replace(/-/g, ':') : '';
+                
+                return `
+                <div class="flex items-center gap-6 p-4 bg-surface-container-lowest rounded-xl hover:bg-surface-container hover:shadow-sm transition-all group" id="file-${file}">
+                    <button onclick="toggleAudio('/audio/${file}', this)" class="w-12 h-12 flex items-center justify-center bg-surface-container-high text-on-surface rounded-full transition-transform hover:bg-primary hover:text-white active:scale-90">
+                        <span class="material-symbols-outlined text-2xl">play_arrow</span>
+                    </button>
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="font-semibold text-on-surface tracking-tight">${file}</h3>
+                        </div>
+                        <div class="h-1 bg-surface-container-high rounded-full w-full overflow-hidden">
+                            <div class="progress-bar bg-primary h-full w-0 transition-all duration-300"></div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-8 text-on-surface-variant font-label text-sm px-4">
+                        <div class="flex flex-col items-end">
+                            <span class="font-medium">${dateStr}</span>
+                            <span class="text-[10px] uppercase opacity-60">${timeStr}</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <a href="/audio/${file}" download class="p-2 hover:bg-primary-container hover:text-primary rounded-lg transition-colors opacity-0 group-hover:opacity-100">
+                                <span class="material-symbols-outlined">download</span>
+                            </a>
+                            <button onclick="deleteFile('${file}')" class="p-2 hover:bg-error/10 hover:text-error rounded-lg transition-colors opacity-0 group-hover:opacity-100">
+                                <span class="material-symbols-outlined">delete</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function toggleAudio(url, btn) {
+            const icon = btn.querySelector('.material-symbols-outlined');
+            
+            if (currentAudio && currentAudio.src.endsWith(url)) {
+                if (currentAudio.paused) {
+                    currentAudio.play();
+                    icon.textContent = 'pause';
+                    btn.classList.add('bg-primary', 'text-white');
+                } else {
+                    currentAudio.pause();
+                    icon.textContent = 'play_arrow';
+                    btn.classList.remove('bg-primary', 'text-white');
+                }
+                return;
+            }
+
+            if (currentAudio) {
+                currentAudio.pause();
+                if (currentBtn) {
+                    currentBtn.querySelector('.material-symbols-outlined').textContent = 'play_arrow';
+                    currentBtn.classList.remove('bg-primary', 'text-white');
+                    const oldRow = currentBtn.closest('.group');
+                    if (oldRow) oldRow.querySelector('.progress-bar').style.width = '0%';
+                }
+            }
+
+            currentAudio = new Audio(url);
+            currentBtn = btn;
+            
+            currentAudio.play();
+            icon.textContent = 'pause';
+            btn.classList.add('bg-primary', 'text-white');
+
+            const progressBar = btn.closest('.group').querySelector('.progress-bar');
+            
+            currentAudio.ontimeupdate = () => {
+                const progress = (currentAudio.currentTime / currentAudio.duration) * 100;
+                progressBar.style.width = `${progress}%`;
+            };
+
+            currentAudio.onended = () => {
+                icon.textContent = 'play_arrow';
+                btn.classList.remove('bg-primary', 'text-white');
+                progressBar.style.width = '0%';
+            };
+        }
+
+        async function deleteFile(filename) {
+            if (!confirm(`¿Estás seguro de que deseas eliminar ${filename}?`)) return;
+            
+            try {
+                const response = await fetch(`/delete/${filename}`, { method: 'DELETE' });
+                if (response.ok) {
+                    loadHistory();
+                } else {
+                    alert('Error al eliminar el archivo');
+                }
+            } catch (error) {
+                console.error('Error deleting file:', error);
+            }
+        }
+
+        synthesizeBtn.addEventListener('click', async () => {
+            const text = textInput.value.trim();
+            if (!text) {
+                alert('Por favor ingresa un texto');
+                return;
+            }
+
+            synthesizeBtn.disabled = true;
+            btnText.textContent = 'Synthesizing...';
+            synthesizeBtn.classList.add('opacity-70', 'cursor-not-allowed');
+
+            try {
+                const response = await fetch('/synthesize', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        text: text,
+                        language: languageSelect.value,
+                        accent: accentSelect.value
+                    })
+                });
+
+                if (response.ok) {
+                    textInput.value = '';
+                    loadHistory();
+                } else {
+                    const error = await response.json();
+                    alert('Error: ' + (error.detail || 'Error desconocido'));
+                }
+            } catch (error) {
+                console.error('Error synthesizing:', error);
+                alert('Error de conexión');
+            } finally {
+                synthesizeBtn.disabled = false;
+                btnText.textContent = 'Synthesize Audio';
+                synthesizeBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+            }
+        });
+
+        const languageAccents = {
+            'en': [
+                { label: 'English (Australia)', tld: 'com.au' },
+                { label: 'English (United Kingdom)', tld: 'co.uk' },
+                { label: 'English (United States)', tld: 'us' },
+                { label: 'English (Canada)', tld: 'ca' },
+                { label: 'English (India)', tld: 'co.in' },
+                { label: 'English (Ireland)', tld: 'ie' },
+                { label: 'English (South Africa)', tld: 'co.za' },
+                { label: 'English (Nigeria)', tld: 'com.ng' }
+            ],
+            'fr': [
+                { label: 'French (Canada)', tld: 'ca' },
+                { label: 'French (France)', tld: 'fr' }
+            ],
+            'zh-CN': [
+                { label: 'Mandarin (China Mainland)', tld: 'any' }
+            ],
+            'zh-TW': [
+                { label: 'Mandarin (Taiwan)', tld: 'any' }
+            ],
+            'pt': [
+                { label: 'Portuguese (Brazil)', tld: 'com.br' },
+                { label: 'Portuguese (Portugal)', tld: 'pt' }
+            ],
+            'es': [
+                { label: 'Spanish (Mexico)', tld: 'com.mx' },
+                { label: 'Spanish (Spain)', tld: 'es' },
+                { label: 'Spanish (United States)', tld: 'us' }
+            ]
+        };
+
+        function updateAccents() {
+            const lang = languageSelect.value;
+            const accents = languageAccents[lang] || [];
+            accentSelect.innerHTML = accents.map(acc => `<option value="${acc.tld}">${acc.label}</option>`).join('');
+        }
+
+        // Language change effect - update accent options
+        languageSelect.addEventListener('change', updateAccents);
+
+        // Initial load
+        loadHistory();
+        updateAccents();
+    </script>
+</body>
+
+</html>

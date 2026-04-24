@@ -1,0 +1,10 @@
+pyusb
+pyserial
+fastapi
+uvicorn
+libusb
+pywin32
+pywinusb
+cython
+requests
+httpx

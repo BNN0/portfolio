@@ -1,0 +1,6 @@
+pyttsx3
+gTTS
+playsound3
+pvspeaker
+fastapi
+uvicorn

@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Industrial Intelligence | Inventory Ledger</title>
+    <script src="/utils/fullcalendar-6.1.20/dist/index.global.min.js"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed-dim": "#ccd4ee",
+                        "inverse-surface": "#000f21",
+                        "on-tertiary-fixed": "#000000",
+                        "on-background": "#00345e",
+                        "tertiary-container": "#fd4e4d",
+                        "secondary": "#006d4a",
+                        "secondary-container": "#6ffbbe",
+                        "surface-variant": "#d2e4ff",
+                        "on-surface": "#00345e",
+                        "on-secondary-container": "#005e3f",
+                        "tertiary-fixed": "#fd4e4d",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed": "#373f54",
+                        "secondary-fixed": "#6ffbbe",
+                        "surface-dim": "#c4dcff",
+                        "on-primary-container": "#4a5167",
+                        "outline-variant": "#81b5f6",
+                        "on-secondary": "#e6ffee",
+                        "on-tertiary-fixed-variant": "#3b0003",
+                        "inverse-primary": "#dae2fd",
+                        "background": "#f8f9ff",
+                        "error-dim": "#4e0309",
+                        "secondary-fixed-dim": "#5fedb0",
+                        "tertiary": "#ba1b24",
+                        "outline": "#477dbb",
+                        "primary-fixed": "#dae2fd",
+                        "on-surface-variant": "#26619d",
+                        "surface-container-low": "#eff4ff",
+                        "secondary-dim": "#005f40",
+                        "error-container": "#fe8983",
+                        "on-primary": "#f7f7ff",
+                        "surface-tint": "#565e74",
+                        "primary": "#565e74",
+                        "tertiary-fixed-dim": "#ec4142",
+                        "tertiary-dim": "#a9081a",
+                        "on-primary-fixed-variant": "#535b71",
+                        "on-error": "#fff7f6",
+                        "primary-dim": "#4a5268",
+                        "on-error-container": "#752121",
+                        "on-tertiary-container": "#1f0001",
+                        "surface-container-high": "#dce9ff",
+                        "surface-container-highest": "#d2e4ff",
+                        "inverse-on-surface": "#8e9eb7",
+                        "surface-container": "#e5eeff",
+                        "error": "#9f403d",
+                        "on-tertiary": "#fff7f6",
+                        "on-secondary-fixed-variant": "#006947",
+                        "on-secondary-fixed": "#004930",
+                        "surface-bright": "#f8f9ff",
+                        "primary-container": "#dae2fd",
+                        "surface": "#f8f9ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+    <script src="/src/pages/inventory.js?v=4">
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .ghost-border {
+            border-bottom: 1px solid rgba(129, 181, 246, 0.15);
+        }
+
+        .ghost-border-focus:focus-within {
+            border-bottom: 2px solid #565e74;
+        }
+    </style>
+</head>
+
+<body class="bg-background text-on-background selection:bg-secondary-container selection:text-on-secondary-container">
+    <!-- TopNavBar -->
+    <header class="fixed top-0 w-full z-50 bg-slate-50 dark:bg-slate-900 font-inter tracking-tight text-sm">
+        <div class="flex justify-between items-center h-14 px-6 w-full">
+            <div class="text-lg font-bold tracking-tighter text-slate-700 dark:text-slate-200">
+                Industrial Intelligence
+            </div>
+            <nav class="hidden md:flex items-center gap-8">
+                <a class="text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors"
+                    href="/">Dashboard</a>
+                <a class="text-slate-900 dark:text-white font-semibold border-b-2 border-slate-600 dark:border-slate-400 pb-1"
+                    href="/inventory">Inventory</a>
+            </nav>
+            <div class="flex items-center gap-4 text-slate-600 dark:text-slate-300">
+            </div>
+        </div>
+        <div class="bg-slate-200/50 dark:bg-slate-800/50 h-[1px]"></div>
+    </header>
+    <!-- SideNavBar -->
+    <aside
+        class="fixed left-0 top-14 h-[calc(100vh-3.5rem)] w-64 bg-slate-100 dark:bg-slate-950 shadow-xl shadow-slate-900/5 transition-all duration-200 ease-in-out z-40">
+        <div class="flex flex-col p-4 gap-2 h-full">
+            <div class="mb-4 px-2">
+                <h3 class="font-inter text-xs font-medium tracking-wide uppercase text-slate-700 dark:text-slate-300">
+                    Architect Ledger</h3>
+                <p class="text-[10px] text-secondary flex items-center gap-1 mt-1">
+                    <span class="w-1.5 h-1.5 bg-secondary rounded-full"></span> Sync Active
+                </p>
+            </div>
+            <nav class="flex-1 flex flex-col gap-1">
+                <a class="text-slate-500 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 flex items-center gap-3 px-3 py-2.5 font-inter text-xs font-medium tracking-wide uppercase transition-all"
+                    href="/">
+                    <span class="material-symbols-outlined text-[20px]" data-icon="dashboard">dashboard</span>
+                    Dashboard
+                </a>
+                <a class="bg-slate-200 dark:bg-slate-800 text-slate-900 dark:text-white rounded-md flex items-center gap-3 px-3 py-2.5 font-inter text-xs font-medium tracking-wide uppercase transition-all"
+                    href="/inventory">
+                    <span class="material-symbols-outlined text-[20px]" data-icon="inventory_2">inventory_2</span>
+                    Inventory
+                </a>
+                <a class="text-slate-500 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 flex items-center gap-3 px-3 py-2.5 font-inter text-xs font-medium tracking-wide uppercase transition-all"
+                    href="/inventory">
+                    <span class="material-symbols-outlined text-[20px]" data-icon="local_shipping">local_shipping</span>
+                    Deliveries
+                </a>
+                <a class="text-slate-500 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 flex items-center gap-3 px-3 py-2.5 font-inter text-xs font-medium tracking-wide uppercase transition-all"
+                    href="/inventory">
+                    <span class="material-symbols-outlined text-[20px]"
+                        data-icon="Precision_manufacturing">precision_manufacturing</span> Consumption
+                </a>
+            </nav>
+
+        </div>
+    </aside>
+    <!-- Main Canvas -->
+    <main class="ml-64 mt-14 p-8 min-h-screen">
+        <header class="flex justify-between items-end mb-12">
+            <div>
+                <h1 class="text-[1.5rem] font-bold tracking-[-0.02em] text-on-background mb-2 flex items-center gap-4">
+                    Inventory Management Calendar - <span id="currentPartNoDisplay">Select Part...</span>
+                    <div class="relative ml-4">
+                        <div class="flex items-center bg-surface-container-low rounded-md px-3 py-1 border border-outline-variant/30 focus-within:border-primary transition-all">
+                            <span class="material-symbols-outlined text-[18px] text-on-surface-variant">search</span>
+                            <input id="partSearchInput" type="text" placeholder="Search Part No..." class="bg-transparent border-none focus:ring-0 text-xs w-48 text-on-surface ml-2" />
+                        </div>
+                        <div id="partSearchResults" class="absolute top-full left-0 w-[200%] bg-surface shadow-[0_10px_40px_rgba(0,0,0,0.1)] rounded-xl mt-2 z-[100] border border-outline-variant/10 hidden max-h-80 overflow-y-auto backdrop-blur-sm">
+                            <!-- Results will be injected here -->
+                        </div>
+                    </div>
+                </h1>
+                <!-- <p class="text-on-surface-variant text-sm flex items-center gap-2">
+                    <span class="material-symbols-outlined text-sm">calendar_month</span> October 2026
+                </p> -->
+            </div>
+            <div class="flex gap-4">
+                <div
+                    class="flex items-center gap-6 px-4 py-2 bg-surface-container-low rounded-lg text-xs font-medium text-on-surface-variant">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-secondary"></span> Healthy Delivery
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-primary"></span> Risk Shortage
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-tertiary"></span> Critical Shortage
+                    </div>
+                </div>
+                <button id="resetDataBtn"
+                    class="bg-tertiary-dim text-on-tertiary px-6 py-2 rounded-md font-medium text-sm flex items-center gap-2 cursor-pointer hover:bg-tertiary transition-all">
+                    <span class="material-symbols-outlined text-[18px]">restart_alt</span> Reset & Load Data
+                </button>
+                <button id="recalculateBtn"
+                    class="bg-surface-container-low text-primary border border-primary/20 hover:bg-primary/5 px-6 py-2 rounded-md font-medium text-sm flex items-center gap-2 cursor-pointer transition-all">
+                    <span class="material-symbols-outlined text-[18px]">sync</span> Reajustar
+                </button>
+                <button id="manualLogBtn"
+                    class="bg-primary text-on-primary px-6 py-2 rounded-md font-medium text-sm flex items-center gap-2 cursor-pointer">
+                    <span class="material-symbols-outlined text-[18px]">add</span> Manual Log
+                </button>
+            </div>
+        </header>
+
+        <!-- Part Information Banner (Hidden initially) -->
+        <div id="partInfoBanner" class="mb-12 bg-surface-container-low rounded-xl border border-outline-variant/20 p-2 flex items-center justify-between overflow-hidden shadow-sm">
+            <div class="flex-1 px-8 py-3 border-r border-outline-variant/10 text-center">
+                <p class="text-[10px] uppercase font-bold text-on-surface-variant tracking-widest mb-1">Part Number</p>
+                <h4 id="bannerPartNo" class="text-sm font-bold text-on-surface">---</h4>
+            </div>
+            <div class="flex-[2] px-8 py-3 border-r border-outline-variant/10">
+                <p class="text-[10px] uppercase font-bold text-on-surface-variant tracking-widest mb-1">Description</p>
+                <h4 id="bannerDesc" class="text-sm font-medium text-on-surface truncate">Select a part to view details</h4>
+            </div>
+            <div class="flex-1 px-8 py-3 border-r border-outline-variant/10 text-center">
+                <p class="text-[10px] uppercase font-bold text-on-surface-variant tracking-widest mb-1">Total Inventory</p>
+                <h4 id="bannerTotal" class="text-sm font-bold text-secondary">0</h4>
+            </div>
+            <div class="flex-1 px-8 py-3 border-r border-outline-variant/10 text-center flex flex-col items-center justify-center">
+                <p class="text-[10px] uppercase font-bold text-on-surface-variant tracking-widest mb-1">Stock Limit</p>
+                <div class="flex items-center justify-center gap-2">
+                    <input id="bannerStockLimitInput" type="number" class="w-16 bg-transparent text-center text-sm font-bold text-tertiary-fixed outline-none border-b border-outline-variant/20 focus:border-tertiary-fixed focus:bg-surface-variant transition-all rounded-sm px-1 py-0.5" value="0">
+                    <button id="bannerStockLimitSaveBtn" class="material-symbols-outlined text-[16px] text-primary hover:text-tertiary-fixed cursor-pointer transition-colors" title="Save Limit">save</button>
+                </div>
+            </div>
+            <div class="flex-1 px-8 py-3 text-center">
+                <p class="text-[10px] uppercase font-bold text-on-surface-variant tracking-widest mb-1">Provider</p>
+                <h4 id="bannerProvider" class="text-xs font-semibold text-on-surface-variant">---</h4>
+            </div>
+        </div>
+
+        <!-- Monthly Calendar Grid -->
+        <div id="calendar" class="bg-surface rounded-lg shadow-sm p-4"></div>
+    </main>
+
+    <!-- Manual Log Modal -->
+    <div id="manualLogModal" class="fixed top-0 right-0 h-full w-[35%] bg-surface-container-highest shadow-[0px_20px_50px_rgba(0,52,94,0.08)] z-[60] flex flex-col transition-transform duration-300 translate-x-full">
+        <div class="p-8 flex items-center justify-between border-b border-outline-variant/20">
+            <div>
+                <h2 id="modalCurrentDate" class="headline-sm font-bold text-on-surface">October 24, 2026</h2>
+                <p class="label-md font-medium text-on-surface-variant uppercase tracking-wider">Data Update Terminal</p>
+            </div>
+            <button id="closeModalBtn" class="material-symbols-outlined text-on-surface-variant hover:text-on-surface p-2 cursor-pointer">close</button>
+        </div>
+        <div class="flex-1 overflow-y-auto p-8 space-y-10">
+            <!-- Section 1: Inventory Update -->
+            <section>
+                <div class="flex items-center gap-2 mb-6">
+                    <span class="material-symbols-outlined text-primary" data-icon="inventory_2">inventory_2</span>
+                    <h3 id="inventory-section-header" class="text-xs font-bold uppercase tracking-[0.05em] text-on-surface">Inventory Update</h3>
+                </div>
+                <div class="space-y-6">
+                    <div class="ghost-border ghost-border-focus">
+                        <label id="inventory-field-label" class="block label-sm font-semibold text-on-surface-variant mb-1 uppercase">Final Stock (Unit Count)</label>
+                        <div class="flex items-center">
+                            <input id="input-final-stock" class="w-full bg-transparent border-none p-0 text-lg font-bold text-on-surface read-only:text-on-surface-variant focus:ring-0 placeholder:text-on-surface-variant/30" type="text" value="14,250" readonly />
+                            <button type="button" class="edit-input-btn material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors cursor-pointer text-[20px] p-1 ms-2" title="Edit">edit</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Section 4: Order Logistics -->
+            <section>
+                <div class="flex items-center gap-2 mb-6">
+                    <span class="material-symbols-outlined text-primary" data-icon="move_to_inbox">move_to_inbox</span>
+                    <h3 class="text-xs font-bold uppercase tracking-[0.05em] text-on-surface">Order Logistics</h3>
+                </div>
+                <div class="space-y-6">
+                    <div class="ghost-border ghost-border-focus">
+                        <label class="block label-sm font-semibold text-on-surface-variant mb-1 uppercase">REQUESTED QUANTITY</label>
+                        <div class="flex items-center">
+                            <input id="input-requested-qty" class="w-full bg-transparent border-none p-0 text-lg font-bold text-on-surface read-only:text-on-surface-variant focus:ring-0 placeholder:text-on-surface-variant/30" placeholder="0" type="number" readonly />
+                            <button type="button" class="edit-input-btn material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors cursor-pointer text-[20px] p-1 ms-2" title="Edit">edit</button>
+                        </div>
+                    </div>
+                    <div class="flex gap-4">
+                        <div class="flex-1 ghost-border ghost-border-focus">
+                            <label class="block label-sm font-semibold text-on-surface-variant mb-1 uppercase">INCOMING DELIVERY</label>
+                            <div class="flex items-center">
+                                <input id="input-incoming-delivery" class="w-full bg-transparent border-none p-0 text-lg font-bold text-on-surface read-only:text-on-surface-variant focus:ring-0 placeholder:text-on-surface-variant/30" placeholder="0" type="number" readonly />
+                                <button type="button" class="edit-input-btn material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors cursor-pointer text-[20px] p-1 ms-2" title="Edit">edit</button>
+                            </div>
+                        </div>
+                        <div class="flex-1 ghost-border ghost-border-focus">
+                            <label class="block label-sm font-semibold text-on-surface-variant mb-1 uppercase">ON THE WAY</label>
+                            <div class="flex items-center">
+                                <input id="input-on-the-way" class="w-full bg-transparent border-none p-0 text-lg font-bold text-on-surface read-only:text-on-surface-variant focus:ring-0 placeholder:text-on-surface-variant/30" placeholder="0" type="number" readonly />
+                                <button type="button" class="edit-input-btn material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors cursor-pointer text-[20px] p-1 ms-2" title="Edit">edit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Section 2: Incoming Deliveries -->
+            <section>
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-secondary" data-icon="local_shipping">local_shipping</span>
+                        <h3 class="text-xs font-bold uppercase tracking-[0.05em] text-on-surface">Incoming Deliveries</h3>
+                    </div>
+                    <button class="text-[10px] font-bold uppercase text-primary tracking-widest flex items-center gap-1 hover:underline cursor-pointer">
+                        <span class="material-symbols-outlined text-sm">add</span> Add New
+                    </button>
+                </div>
+                <div class="bg-surface-container-lowest rounded-lg border border-outline-variant/10 overflow-hidden">
+                    <table class="w-full text-left text-[11px]">
+                        <thead class="bg-surface-container text-on-surface-variant font-bold uppercase tracking-wider">
+                            <tr>
+                                <th class="px-4 py-3">Invoice No</th>
+                                <!-- <th class="px-4 py-3">Material</th> -->
+                                <th class="px-4 py-3">Qty</th>
+                                <th class="px-4 py-3">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-outline-variant/5">
+                            <tr class="hover:bg-surface-container-low transition-colors">
+                                <td class="px-4 py-3 font-medium">INV-9821</td>
+                                <!-- <td class="px-4 py-3">19GA13 A SCREW</td> -->
+                                <td class="px-4 py-3 text-right">5,000</td>
+                                <td class="px-4 py-3"><span class="text-[9px] font-bold bg-secondary/10 text-secondary px-2 py-0.5 rounded-full uppercase">Received</span></td>
+                            </tr>
+                            <tr class="hover:bg-surface-container-low transition-colors">
+                                <td class="px-4 py-3 font-medium">INV-9844</td>
+                                <!-- <td class="px-4 py-3">AL-60 TUBING</td> -->
+                                <td class="px-4 py-3 text-right">120</td>
+                                <td class="px-4 py-3"><span class="text-[9px] font-bold bg-tertiary/10 text-tertiary px-2 py-0.5 rounded-full uppercase">Delayed</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <!-- Section 3: Consumption -->
+            <section>
+                <div class="flex items-center gap-2 mb-6">
+
+                </div>
+                <div class="space-y-6">
+                 
+                </div>
+            </section>
+        </div>
+      
+    </div>
+    
+    <!-- Upload Data Modal -->
+    <div id="uploadDataModal" class="fixed inset-0 bg-inverse-surface/40 backdrop-blur-sm z-[100] flex items-center justify-center hidden">
+        <div class="bg-surface w-full max-w-md rounded-2xl shadow-2xl overflow-hidden border border-outline-variant/20">
+            <div class="px-8 py-6 border-b border-outline-variant/10 flex justify-between items-center">
+                <h3 class="text-lg font-bold text-on-surface">Reset & Load Database</h3>
+                <button id="closeUploadModalBtn" class="material-symbols-outlined text-on-surface-variant hover:text-on-surface cursor-pointer">close</button>
+            </div>
+            <div class="p-8 space-y-6">
+                <div class="bg-tertiary/10 border border-tertiary/20 p-4 rounded-lg flex items-start gap-3">
+                    <span class="material-symbols-outlined text-tertiary text-[20px]">warning</span>
+                    <p class="text-[11px] text-tertiary-fixed-dim font-medium leading-relaxed">
+                        <strong>ATTENTION:</strong> This will delete all current database records and re-initialize tables from the Excel file.
+                    </p>
+                </div>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-2">Excel File (.xlsx)</label>
+                        <input id="uploadFileInput" type="file" accept=".xlsx" class="block w-full text-xs text-on-surface file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-xs file:font-bold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 cursor-pointer" />
+                    </div>
+                    
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-2">Initial Total Date</label>
+                        <input id="initialTotalDateInput" type="date" class="w-full bg-surface-container-low border border-outline-variant/20 rounded-md px-4 py-2 text-sm text-on-surface focus:border-primary outline-none" />
+                        <p class="text-[9px] text-on-surface-variant mt-1 italic">Select one day before the month you want to start (e.g., Feb 28th for March).</p>
+                    </div>
+                </div>
+            </div>
+            <div class="px-8 py-6 bg-surface-container-low flex gap-4">
+                <button id="startImportBtn" class="flex-1 bg-primary text-on-primary py-3 rounded-md font-bold text-xs uppercase tracking-widest hover:opacity-90 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-wait">
+                    <span id="importBtnIcon" class="material-symbols-outlined text-[18px]">publish</span>
+                    <span id="importBtnText">Start Import</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
